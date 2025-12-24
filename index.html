@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Markdown Doc</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+
+<body>
+
+    <div id="content"></div>
+
+    <script>
+        async function loadMarkdown() {
+            const response = await fetch('readme.md');
+            const text = await response.text();
+            document.getElementById('content').innerHTML = marked.parse(text);
+        }
+
+        loadMarkdown();
+    </script>
+
+</body>
+
+</html>
