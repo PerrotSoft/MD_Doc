@@ -4,23 +4,56 @@
 <head>
     <title>Markdown Doc</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+        
+        #language-selector {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+        }
+        
+        select {
+            padding: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
 <body>
+
+    <div id="language-selector">
+        <label for="lang">Language / Язык:</label>
+        <select id="lang" onchange="loadMarkdown()">
+            <option value="en">English</option>
+            <option value="ru">Русский</option>
+        </select>
+    </div>
 
     <div id="content"></div>
 
     <script>
         async function loadMarkdown() {
-            const response = await fetch('Readme.md');
-            const text = await response.text();
-            document.getElementById('content').innerHTML = marked.parse(text);
+            const lang = document.getElementById('lang').value;
+            const fileName = `readme_${lang}.md`;
+
+            try {
+                const response = await fetch(fileName);
+                if (!response.ok) throw new Error('File not found');
+                const text = await response.text();
+                document.getElementById('content').innerHTML = marked.parse(text);
+            } catch (error) {
+                document.getElementById('content').innerHTML = `<p style="color:red">Error loading ${fileName}</p>`;
+            }
         }
 
         loadMarkdown();
     </script>
 
 </body>
-
 
 </html>
